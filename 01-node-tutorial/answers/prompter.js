@@ -60,7 +60,7 @@ const form = () => {
 };
 
 const server = http.createServer((req, res) => {
-  console.log("req.method is ", req.method);
+  console.log("req.method is now: ", req.method);
   console.log("req.url is ", req.url);
   if (req.method === "POST") {
     getBody(req, (body) => {
