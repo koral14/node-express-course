@@ -1,3 +1,7 @@
 /node_modules
+/content/big.txt
+answers/temporary/*
+!answers/temporary/.keep
+/node_modules
 .DS_Store
 temporary/fileC.txt
