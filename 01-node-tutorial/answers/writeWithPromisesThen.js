@@ -1,34 +1,29 @@
-const { readFile, writeFile } = require('fs')
+const { readFile, writeFile } = require('fs').promises
 
-writeFile(
-    './temporary/fileD.txt', 
-    'This is first line',
-    (err, result) => {
+writeFile('./temporary/fileD.txt', 'This is first line')
+.then(() => {
+    console.log('1');
+    return writeFile('./temporary/fileD.txt', '\nThis is second line\n', {flag: 'a'})
+})
+.then(() => {
+    console.log('2');
+    return writeFile('./temporary/fileD.txt', 'This is third line\n', {flag: 'a'})
+})
+.then(() => {
+    console.log('3');
+    return readFile('./temporary/fileD.txt', 'utf-8', (err, result) => {
         if (err) {
-            console.log(err)
+            console.log(err);
             return
-        } 
-        console.log('done with this task');
-    }
-    )
-    .then(() => {
-        return writeFile('./temporary/fileD.txt', 'This is second line', {flag: 'a'})
+        } else {
+            return result;
+        }
     })
-    .then(() => {
-        return writeFile('./temporary/fileD.txt', 'This is third line', {flag: 'a'})
-    })
-    .then(() => {
-        return readFile('./temporary/fileD.txt', 'utf-8', (err, result) => {
-            if (err) {
-                console.log(err);
-                return
-            }
-            const resultFile = result
-        })
-    })
-    .then(() => {
-        console.log(`this is the result from THEN: ${resultFile}`);
-    })
-    .catch((error) => {
-        console.log("An error occured: ", error);
-    })
+})
+.then((result) => {
+    console.log('4');
+    console.log(`This is the result from THEN cascading: \n${result}`);
+})
+.catch((error) => {
+    console.log("An error occured: ", error);
+})
