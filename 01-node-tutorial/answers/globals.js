@@ -7,6 +7,3 @@ setInterval(() => {
 }, 1000)
 
 console.log(process.env.MY_VAR);
-console.log(process.env.MY_VAR1);
-console.log(process.env.TEST);
-console.log(process.env.MY_VAR3);
