@@ -7,7 +7,10 @@ const writer = async () => {
     const thirdLine = 'This is third line';
     try {
         await writeFile('./temporary/fileC.txt', 
-            `This is the result: \n${firstLine}, \n${secondLine}, \n${thirdLine}.\n`,
+            `This is the result: 
+            \n${firstLine}, 
+            \n${secondLine}, 
+            \n${thirdLine}.\n`,
             { flag: 'a' }
         )
     }
