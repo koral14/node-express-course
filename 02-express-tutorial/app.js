@@ -2,18 +2,52 @@ console.log('Express Tutorial')
 
 const express = require('express');
 const app = express();
-
-// app.get('/', (req, res) => {
-//     console.log('user hit the resource');
-//     res.send('Home page test')
-// })
-
-// app.get('/about', (req, res) => {
-//     console.log('test about');
-//     res.send('about page')
-// })
+const { products } = require('./data')
 
 app.use(express.static('./public'));
+
+app.get('/api/v1/test', (req, res) => {
+    res.json({message: 'It worked'});
+})
+
+app.get('/api/v1/products', (req, res) => {
+    res.json(products);
+})
+
+app.get('/api/v1/products/:productID', (req, res) => {
+    const {productID} = req.params;
+    const idToFind = Number(productID); //because this will be a string but we need an integer
+    const product = products.find(p => p.id = idToFind);
+    if (!product) {
+        return res.status(404).send('<h1>Product not found!!!</h1>')
+    }
+    res.json(product);
+});
+
+app.get('/api/v1/query', (req, res) => {
+    const { search, limit, newSearch, priceSearch } = req.query;
+    let sortedProducts = [...products];
+    if (search) {
+        sortedProducts = sortedProducts.filter((product) => {
+            return product.name.startsWith(search)
+        });
+    }
+    if (newSearch) {
+        return res.status(200).send(`<h1>You searched for the "${newSearch.toUpperCase()}" word!!!</h1>`)
+    }
+    if (priceSearch) {
+        sortedProducts = sortedProducts.filter((product) => {
+            return product.price < priceSearch;
+        })
+    }
+    if (limit) {
+        sortedProducts = sortedProducts.slice(0, Number(limit));
+    }
+    if (sortedProducts.length < 1) {
+        return res.status(200).json({success: true, data: []});
+    }
+    res.status(200).json(sortedProducts)
+})
 
 app.all('*', (req, res) => {
     res.status(404).send('<h1>resource not found</h1>')
@@ -22,29 +56,3 @@ app.all('*', (req, res) => {
 app.listen(3000, () => {
     console.log('server is listening on port 5000...');
 });
-
-  
-
-//Edit app.js to add all the elements of an Express application as listed above, in the right order. 
-// The basic elements of an express program are as follows:
-
-// The require statement for express
-// Creation of the app as returned from express()
-// app.use statements for the middleware. You’ll eventually use many kinds of middleware, but for now the only middleware we are using is express.static().
-// app.get and app.post statements for the routes you will handle. Eventually these will be refactored into router modules, but for now you can put them inline.
-// An app.all statement after these to handle page not found conditions.
-// An app.listen statement
-
-//Edit app.js to add all the elements of an Express application as listed above, in the right order. 
-//You won’t have any app.get or app.post statements yet.
-//You should have the statement app.use(express.static(‘./public’)) 
-//so that your HTML file will load. 
-//Use port 3000 in the listen statement.
-
-//app.get - not this one
-//app.post - not this one
-//app.put
-//app.delete
-//app.all
-//app.use *
-//app.listen

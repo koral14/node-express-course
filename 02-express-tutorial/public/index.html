@@ -7,11 +7,32 @@
         <header>
             <h1>Olga Musteata</h1>
         </header>
+        <div id="productList"></div>
         <div>
             <section>
                 <h2>About me</h2>
                 <p>I keep moving towards my goal of becoming a professional web designer.</p>
             </section>
+            <button onclick="fetchData()">Fetch Products</button>
+            <script>
+                const fetchData = () => {
+                    fetch('/api/v1/products')
+                        .then((response) => response => response.json())
+                        .then(data => {
+                            const productList = document.getElementById('productList');
+                            productList.innerHTML = '';
+                            console.log(data);
+                            data.forEach(product => { // shows an error TypeError: data.forEach is not a function
+                                const productItem = document.createElement('p');
+                                productItem.textContent = `${product.name} - $${product.price}`;
+                                productList.appendChild(productElement);
+                                });
+                            })
+                        .catch((err) => {
+                            console.log('Error: ', err);
+                        })
+                }
+            </script>
         </div>
     </body>
 </html>
