@@ -48,8 +48,10 @@
 
       const fetchPeople = async () => {
         try {
-          const { data } = await axios.get('/api/people')
-
+          const { data } = await axios.get('/api/people', {name: nameValue})
+          const h5 = document.createElement('h5')
+          h5.textContent = data.person
+          result.appendChild(h5)
           const people = data.data.map((person) => {
             return `<h5>${person.name}</h5>`
           })
