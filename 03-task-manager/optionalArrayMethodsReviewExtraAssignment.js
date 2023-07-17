@@ -178,7 +178,14 @@ const everyonesLastName = names.map((name) => {
   return lastName;
 });
 console.log('everyone last name', everyonesLastName);
-
+// ==========================================================
+const newNamesArr = names.map((name) => {
+  const eachWord = name.split(" ")
+  const lastName = eachWord.pop()
+  return lastName
+})
+console.log('Last Names1: ', newNamesArr);
+// ===========================================================
 //////// CHALLENGE: Filter to the people who followed the right
 // "right format" is "<first name> <last name>" with a single space!
 const rightFormat = /^\w+ \w+$/;
@@ -188,6 +195,11 @@ const matchesTeachersPedanticFormattingRule = names.filter((name) => {
 console.log('good students', matchesTeachersPedanticFormattingRule)
 // (joke :)
 
+const rightNames = /^\w+ \w+$/;
+const matchesTheRule = names.filter((name) => {
+  return name.match(rightFormat)
+})
+console.log('These names are of the right format: ', matchesTheRule);
 
 //////// CHALLENGE: Change everyone's name to "Title Case"
 // (Each Word Uppercase)
@@ -204,18 +216,32 @@ const titledNames = names.map((name) => {
 
   const titledName = eachWordSeparated.map((inputWord) => {
     const inputLetters = inputWord.split("");
-    const wordWithFirstLetterUppercase = inputLetters
-      .map((letter, idx) => (
+    const wordWithFirstLetterUppercase = inputLetters.map((letter, idx) => (
         idx === 0
           ? letter.toUpperCase()
           : letter.toLowerCase()
-      ))
-      .join("")
+      )).join("")
     return wordWithFirstLetterUppercase
   });
   return titledName.join(" ")
 });
 console.log('titledNames', titledNames);
+
+// ===========================================
+const correctedNames = names.map((name) => {
+  const eachWordSeparatedBySpace = name.split(" ")
+
+  const nameByRule = eachWordSeparatedBySpace.map((oneWord) => {
+    const eachLetter = oneWord.split("")
+    const firstLetterUpperCaseWord = eachLetter.map((letter, idx) => (
+      idx === 0 ? letter.toUpperCase() : letter.toLowerCase()
+    )).join("")
+    return firstLetterUpperCaseWord
+  })
+  return nameByRule.join(" ")
+})
+console.log('corrctedNames are now: ', correctedNames);
+//============================================
 
 // Same example as above (change every name to title case), but I'll break it
 // up into smaller pieces to make it more readable. Each callback function
