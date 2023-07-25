@@ -10,10 +10,15 @@ const logon = async (req, res) => {
     if (!name || !password) {
         res.status(400).json({message: 'Please provide email and password'})
     }
-  
-    const token = jwt.sign({ name }, process.env.JWT_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION })
-
-    res.status(200).json({ msg: 'The user has been successfully created', token })
+    
+    // sign or create the token
+    jwt.sign( { name }, process.env.JWT_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION },
+        (err, token) => {
+            if (err) {
+                return res.status(500).json({ message: 'An error occured while creating the token!' })
+            }
+        return res.status(200).json({ message: 'The user has been successfully created', token })
+    })
 }
 
 const hello = async (req, res) => {
